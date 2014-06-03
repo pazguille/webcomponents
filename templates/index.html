@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, minimal-ui">
+    <title>Web Components: Templates</title>
+  </head>
+  <body>
+
+    <template id="user-template">
+      <dl class="user">
+        <dt>Fullname:</dt>
+        <dd class="user-name"></dd>
+        <dt>Twitter Account:</dt>
+        <dd class="user-twitter"></dd>
+      </dl>
+    </template>
+
+    <script>
+      function addUser(user) {
+        var tmpl = document.querySelector("#user-template");
+
+        var usr = tmpl.content.cloneNode(true);
+        usr.querySelector('.user-name').textContent = user.name;
+        usr.querySelector('.user-twitter').textContent = user.twitter;
+
+        document.body.appendChild(usr);
+      }
+
+      addUser({
+        'name': 'Guille Paz',
+        'twitter': '@pazguille'
+      });
+    </script>
+  </body>
+</html>
