@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, minimal-ui">
+    <title>Web Components: Shadow DOM</title>
+  </head>
+  <body>
+
+    <div id="user">
+      <span class="user-twitter">@pazguille</span>
+      <span class="user-tweets">213</span>
+    </div>
+
+    <template id="user-template">
+      <style>
+        .user {
+          border: 1px solid #E1E8ED;
+          background: #FFF;
+          border-radius: 6px;
+          width: 290px;
+          line-height: 16px;
+          background: no-repeat top center;
+          background-size: 290px;
+          position: relative;
+          padding-top: 105px;
+          font-family: "Gotham Narrow SSm",sans-serif,Arial;
+        }
+
+        .user dt {
+          display: none;
+        }
+
+        .user-avatar {
+          background-color: #FFF;
+          border-radius: 6px;
+          padding: 3px;
+          vertical-align: bottom;
+          display: inline-block;
+          position: absolute;
+          top: 70px;
+          left: 10px;
+          margin: 0;
+        }
+
+        .user-avatar img {
+          border-radius: 5px;
+          height: 70px;
+          width: 70px;
+          border: 0;
+          vertical-align: middle;
+        }
+
+        .user-name,
+        .user-twitter {
+          line-height: 21px;
+          padding-left: 95px;
+          margin: 0;
+        }
+
+        .user-name {
+          font-size: 18px;
+        }
+
+        .user-twitter {
+          font-size: 14px;
+          color: #8C9CA9;
+        }
+
+        .user-tweets,
+        .user-following,
+        .user-followers {
+          display: inline-block;
+          color: #B53D25;
+          margin: 15px;
+        }
+
+        .user-tweets:before,
+        .user-following:before,
+        .user-followers:before {
+          content: attr(data-stats);
+          text-transform: uppercase;
+          display: block;
+          font-size: 11px;
+          color: #8C9CA9;
+          margin-bottom: 5px;
+        }
+      </style>
+
+      <dl class="user">
+        <dt>Fullname:</dt>
+        <dd class="user-name"></dd>
+
+        <dt>Twitter Account:</dt>
+        <dd class="user-twitter">
+          <content select=".user-twitter"></content>
+        </dd>
+
+        <dt>Avatar:</dt>
+        <dd class="user-avatar">
+          <img src="">
+        </dd>
+
+        <dt>Tweets</dt>
+        <dd class="user-tweets" data-stats="tweets"></dd>
+
+        <dt>Following</dt>
+        <dd class="user-following" data-stats="following"></dd>
+        <dt>Followers</dt>
+
+        <dd class="user-followers" data-stats="followers"></dd>
+      </dl>
+    </template>
+
+    <script>
+      function addUser(user) {
+        var shadow = document.querySelector('#user').createShadowRoot();
+
+        var tmpl = document.querySelector("#user-template");
+        var usr = tmpl.content.cloneNode(true);
+
+        usr.querySelector('.user').style.backgroundImage = 'url('+ user.bg +')';
+        usr.querySelector('.user-name').textContent = user.name;
+        // usr.querySelector('.user-twitter').textContent = user.twitter;
+        usr.querySelector('.user-avatar img').src = user.avatar;
+        usr.querySelector('.user-tweets').textContent = user.tweets;
+        usr.querySelector('.user-following').textContent = user.following;
+        usr.querySelector('.user-followers').textContent = user.followers;
+
+        shadow.appendChild(usr);
+      }
+
+      var user = {
+        'name': 'Guille Paz',
+        'twitter': '@pazguille',
+        'bg': 'https://pbs.twimg.com/profile_banners/214661070/1377182959/600x200',
+        'avatar': 'https://pbs.twimg.com/profile_images/474784579065499648/5ZfeWbXJ_bigger.jpeg',
+        'tweets': '4,031',
+        'following': 597,
+        'followers': 673
+      };
+
+      addUser(user);
+
+      // document.querySelector('#user').textContent = 'Foo Bar';
+    </script>
+  </body>
+</html>
